@@ -243,7 +243,7 @@ open class SwiftyMarkdown {
 
 		var style = LineStyle.styleFromString(results.foundCharacters)
 		
-		var attributes = [String : AnyObject]()
+		var attributes = [NSAttributedStringKey : AnyObject]()
 		if style == .link {
 			
 			var linkText : NSString?
@@ -258,7 +258,7 @@ open class SwiftyMarkdown {
 			
 			if let hasLink = linkText, let hasURL = linkURL {
 				followingString = hasLink
-				attributes[NSLinkAttributeName] = hasURL
+				attributes[NSAttributedStringKey.link] = hasURL
 			} else {
 				style = .none
 			}
@@ -314,7 +314,7 @@ open class SwiftyMarkdown {
 	
 	// Make H1
 	
-	func attributedStringFromString(_ string : String, withStyle style : LineStyle, attributes : [String : AnyObject] = [:] ) -> NSAttributedString {
+	func attributedStringFromString(_ string : String, withStyle style : LineStyle, attributes : [NSAttributedStringKey : AnyObject] = [:] ) -> NSAttributedString {
 		let textStyle : UIFontTextStyle
 		var fontName : String?
         var attributes = attributes
@@ -330,7 +330,7 @@ open class SwiftyMarkdown {
 			} else {
 				textStyle = UIFontTextStyle.headline
 			}
-			attributes[NSForegroundColorAttributeName] = h1.color
+			attributes[NSAttributedStringKey.foregroundColor] = h1.color
 		case .h2:
 			fontName = h2.fontName
 			if #available(iOS 9, *) {
@@ -338,7 +338,7 @@ open class SwiftyMarkdown {
 			} else {
 				textStyle = UIFontTextStyle.headline
 			}
-			attributes[NSForegroundColorAttributeName] = h2.color
+			attributes[NSAttributedStringKey.foregroundColor] = h2.color
 		case .h3:
 			fontName = h3.fontName
 			if #available(iOS 9, *) {
@@ -346,23 +346,23 @@ open class SwiftyMarkdown {
 			} else {
 				textStyle = UIFontTextStyle.subheadline
 			}
-			attributes[NSForegroundColorAttributeName] = h3.color
+			attributes[NSAttributedStringKey.foregroundColor] = h3.color
 		case .h4:
 			fontName = h4.fontName
 			textStyle = UIFontTextStyle.headline
-			attributes[NSForegroundColorAttributeName] = h4.color
+			attributes[NSAttributedStringKey.foregroundColor] = h4.color
 		case .h5:
 			fontName = h5.fontName
 			textStyle = UIFontTextStyle.subheadline
-			attributes[NSForegroundColorAttributeName] = h5.color
+			attributes[NSAttributedStringKey.foregroundColor] = h5.color
 		case .h6:
 			fontName = h6.fontName
 			textStyle = UIFontTextStyle.footnote
-			attributes[NSForegroundColorAttributeName] = h6.color
+			attributes[NSAttributedStringKey.foregroundColor] = h6.color
 		default:
 			fontName = body.fontName
 			textStyle = UIFontTextStyle.body
-			attributes[NSForegroundColorAttributeName] = body.color
+			attributes[NSAttributedStringKey.foregroundColor] = body.color
 			break
 		}
 		
@@ -370,12 +370,12 @@ open class SwiftyMarkdown {
 		
 		if style == .code {
 			fontName = code.fontName
-			attributes[NSForegroundColorAttributeName] = code.color
+			attributes[NSAttributedStringKey.foregroundColor] = code.color
 		}
 		
 		if style == .link {
 			fontName = link.fontName
-			attributes[NSForegroundColorAttributeName] = link.color
+			attributes[NSAttributedStringKey.foregroundColor] = link.color
 		}
 		
 		// Fallback to body
@@ -387,7 +387,7 @@ open class SwiftyMarkdown {
 		
 		let font = UIFont.preferredFont(forTextStyle: textStyle)
 		let styleDescriptor = font.fontDescriptor
-		let styleSize = styleDescriptor.fontAttributes[UIFontDescriptorSizeAttribute] as? CGFloat ?? CGFloat(14)
+		let styleSize = styleDescriptor.fontAttributes[UIFontDescriptor.AttributeName.size] as? CGFloat ?? CGFloat(14)
 		
 		var finalFont : UIFont
 		if let finalFontName = fontName, let font = UIFont(name: finalFontName, size: styleSize) {
@@ -411,7 +411,7 @@ open class SwiftyMarkdown {
 		}
 		
 		
-		attributes[NSFontAttributeName] = finalFont
+		attributes[NSAttributedStringKey.font] = finalFont
 		
 		return NSAttributedString(string: string, attributes: attributes)
 	}
