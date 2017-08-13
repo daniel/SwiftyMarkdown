@@ -227,10 +227,14 @@ open class SwiftyMarkdown {
 				}
 			}
 			
-			// Append a new line character to the end of the processed line
-//			if lineCount < lines.count {
-				attributedString.append(NSAttributedString(string: "\n"))
-//			}
+            // No multiple new lines in row
+            if lineCount < lines.count {
+                let nextLine = lines[lineCount]
+                if line.count > 0 || (line.count == 0 && nextLine.count != 0) {
+                    attributedString.append(NSAttributedString.init(string: "\n"))
+                }
+            }
+
 			currentType = .body
 		}
 		
