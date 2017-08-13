@@ -143,6 +143,7 @@ open class SwiftyMarkdown {
 				skipLine = false
 				continue
 			}
+            
 			var line = theLine == "" ? " " : theLine
 			for heading in headings {
 				
@@ -162,7 +163,7 @@ open class SwiftyMarkdown {
 			}
 			
 			// Look for underlined headings
-			if lineCount  < lines.count {
+			if lineCount < lines.count {
 				let nextLine = lines[lineCount]
 				
 				if let range = nextLine.range(of: "=") , range.lowerBound == nextLine.startIndex {
@@ -172,7 +173,7 @@ open class SwiftyMarkdown {
 					skipLine = true
 				}
 				
-				if let range = nextLine.range(of: "-") , range.lowerBound == nextLine.startIndex {
+				if let range = nextLine.range(of: "-") , range.lowerBound == nextLine.startIndex, nextLine.count == 1 {
 					// Make H2
 					currentType = .h2
 					// We need to skip the next line
